@@ -5,9 +5,15 @@ import java.util.Scanner;
 
 public class CashRegister {
 
+    // int Array to store what change needs to be given back
     int[] change = new int[11];
     double totalAmountOfChange;
 
+    /**
+     * Calculates total price by adding price of each product in the shoppingcart to the totalPrice
+     * @param products (Product)
+     * @return totalPrice (int)
+     */
     public double calculateTotalPrice(List<Product> products) {
         double totalPrice = 0;
         for (Product p : products) {
@@ -17,6 +23,11 @@ public class CashRegister {
         return totalPrice;
     }
 
+    /**
+     * Calculates if discount needs to be applied. Threshold are higher than 20 and 10.
+     * @param totalPrice (double)
+     * @return totalPrice - discount (double)
+     */
     public double calculateDiscount(double totalPrice) {
         System.out.println("Your total price is €" + totalPrice + ".");
         if (totalPrice > 20) {
@@ -31,6 +42,11 @@ public class CashRegister {
         }
     }
 
+    /**
+     * Acquire user input on how much they pay.
+     * @param totalPrice
+     * @return
+     */
     public double askCustomerToPay(double totalPrice) {
         Scanner userInput = new Scanner(System.in);
         System.out.println("The total amount is " + totalPrice + ".");
@@ -38,11 +54,21 @@ public class CashRegister {
         double moneyPaid = userInput.nextDouble();
         return moneyPaid;
     }
+
+    /**
+     * Calculate payment
+     * @param moneyPaid (double)
+     * @param totalPrice (double)
+     */
     public void calculatePayment(double moneyPaid, double totalPrice) {
         totalAmountOfChange = -(totalPrice - moneyPaid);
         checkIfPaymentIsSuccessful(-totalAmountOfChange);
     }
 
+    /**
+     * Check whether payment is sufficient or not.
+     * @param moneyLeft (double)
+     */
     public void checkIfPaymentIsSuccessful(double moneyLeft) {
         if (moneyLeft > 0) {
             System.out.println("Your payment is not sufficient.");
@@ -58,6 +84,12 @@ public class CashRegister {
         }
     }
 
+    /**
+     * Calculate what change needs to be given back.
+     * If change is higher than 200 euro. The supermarket will not accept it.
+     * Stores amount of notes/coins in the int[] change.
+     * @param amountToChange (double)
+     */
     public void calculateChange(double amountToChange) {
         amountToChange = convertDouble(amountToChange);
         if (amountToChange >= 100.00) {
@@ -107,6 +139,9 @@ public class CashRegister {
         }
     }
 
+    /**
+     * Convert int[] of change into notes and coins to give the user an overview.
+     */
     public void changeToString() {
         for (int i = 0; i < change.length; i++) {
             if (change[i] > 0 && i == 0) {
@@ -134,6 +169,12 @@ public class CashRegister {
             }
         }
     }
+
+    /**
+     * Converts 'amountToChange' into a double with 2 decimals.
+     * @param amountToChange (double)
+     * @return change (double)
+     */
     public double convertDouble(double amountToChange) {
         DecimalFormat df = new DecimalFormat("####.##");
         double change = Double.parseDouble(df.format(amountToChange).replace("," , "."));
